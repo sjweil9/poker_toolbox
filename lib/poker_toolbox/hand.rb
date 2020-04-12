@@ -26,15 +26,24 @@ module PokerToolbox
 
     def calculate_value
       case hand_rank
-      when :straight_flush then 8_000_000 + cards.first.value
-      when :four_of_a_kind then 7_000_000 + (top_pair_card * 15) + second_pair_card
-      when :full_house then 6_000_000 + (top_pair_card * 15) + second_pair_card
-      when :flush then 5_000_000 + cards.first.value
-      when :straight then 4_000_000 + highest_straight_card
-      when :three_of_a_kind then 3_000_000 + value_map[1].map.with_index { |value, index| value * 10 ** (2 - index) }.reduce(0, :+)
-      when :two_pair then 2_000_000 + (top_pair_card * 15) + (second_pair_card * 15) + value_map[1].first
-      when :pair then 1_000_000 + value_map[1].map.with_index { |value, index| value * 10 ** (3 - index) }.reduce(0, :+)
-      when :high_card then cards.map.with_index { |value, index| value * 10 ** (5 - index) }.reduce(0, :+)
+      when :straight_flush
+        8_000_000 + highest_straight_card
+      when :four_of_a_kind
+        7_000_000 + (top_pair_card * 15) + second_pair_card
+      when :full_house
+        6_000_000 + (top_pair_card * 15) + second_pair_card
+      when :flush
+        5_000_000 + cards.first.value
+      when :straight
+        4_000_000 + highest_straight_card
+      when :three_of_a_kind
+        3_000_000 + value_map[1].map.with_index { |v, i| v * 10 ** (2 - i) }.reduce(0, :+)
+      when :two_pair
+        2_000_000 + (top_pair_card * 1500) + (second_pair_card * 15) + value_map[1].first
+      when :pair
+        1_000_000 + (top_pair_card * 10000) + value_map[1].map.with_index { |v, i| v * 10 ** (2 - i) }.reduce(0, :+)
+      when :high_card
+        cards.map.with_index { |c, i| c.value * 10 ** (4 - i) }.reduce(0, :+)
       end
     end
 
@@ -47,9 +56,9 @@ module PokerToolbox
           :flush
         else
           if (@top_pair_card = value_map[4].first)
-            @second_pair_card = value_map[1]
+            @second_pair_card = value_map[1].first
             :four_of_a_kind
-          elsif (@top_pair_card = value_map[3].first && @second_pair_card = value_map[2].first)
+          elsif (@top_pair_card = value_map[3].first) && (@second_pair_card = value_map[2].first)
             :full_house
           elsif (@top_pair_card = value_map[3].first)
             :three_of_a_kind
