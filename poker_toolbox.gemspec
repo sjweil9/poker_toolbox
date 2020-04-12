@@ -9,13 +9,13 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Utilities for representing, playing, and evaluating poker games.}
   spec.homepage      = "https://github.com/sjweil9/poker_toolbox."
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/sjweil9/poker_toolbox"
-  spec.metadata["changelog_uri"] = "https://github.com/sjweil9/poker_toolbox/tree/master/CHANGELOG.md"
+  spec.metadata["changelog_uri"] = "https://github.com/sjweil9/poker_toolbox/blob/master/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
