@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Utilities for representing, playing, and evaluating poker games.}
   spec.homepage      = "https://github.com/sjweil9/poker_toolbox."
   spec.license       = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.7.0")
 
   spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
@@ -25,4 +25,6 @@ Gem::Specification.new do |spec|
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
+
+  spec.add_development_dependency "rubocop", "~> 0.81.0"
 end

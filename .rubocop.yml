@@ -1,0 +1,7 @@
+AllCops:
+  TargetRubyVersion: 2.7
+  Exclude:
+    - poker_toolbox.gemspec
+
+Layout/LineLength:
+  Max: 120

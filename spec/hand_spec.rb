@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+# frozen_string_literal: true
+
 RSpec.describe PokerToolbox::Hand do
   Card = PokerToolbox::Card
 

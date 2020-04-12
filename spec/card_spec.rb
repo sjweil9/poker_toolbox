@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe PokerToolbox::Card do
   let(:ace) { described_class.new('AC') }
   let(:king) { described_class.new('KC') }
