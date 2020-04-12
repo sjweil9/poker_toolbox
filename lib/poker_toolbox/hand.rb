@@ -22,19 +22,48 @@ module PokerToolbox
 
     private unless $TESTING
 
+    attr_reader :top_pair_card, :second_pair_card
+
     def calculate_value
-      case hank_rank
-      when :straight_flush then 8000 + cards.first.value
-      when :four_of_a_kind then 7000 + (top_pair_card.value * 15) + high_card.value
+      case hand_rank
+      when :straight_flush then 8_000_000 + cards.first.value
+      when :four_of_a_kind then 7_000_000 + (top_pair_card * 15) + second_pair_card
+      when :full_house then 6_000_000 + (top_pair_card * 15) + second_pair_card
+      when :flush then 5_000_000 + cards.first.value
+      when :straight then 4_000_000 + highest_straight_card
+      when :three_of_a_kind then 3_000_000 + value_map[1].map.with_index { |value, index| value * 10 ** (2 - index) }.reduce(0, :+)
+      when :two_pair then 2_000_000 + (top_pair_card * 15) + (second_pair_card * 15) + value_map[1].first
+      when :pair then 1_000_000 + value_map[1].map.with_index { |value, index| value * 10 ** (3 - index) }.reduce(0, :+)
+      when :high_card then cards.map.with_index { |value, index| value * 10 ** (5 - index) }.reduce(0, :+)
       end
     end
 
-    def top_pair_card
-      @top_pair_card
-    end
-
     def hand_rank
-
+      if straight?
+        flush? ? :straight_flush : :straight
+      else
+        if flush?
+          # not possible to have a better hand if flush and not straight-flush (four of a kind/full house are impossible)
+          :flush
+        else
+          if (@top_pair_card = value_map[4].first)
+            @second_pair_card = value_map[1]
+            :four_of_a_kind
+          elsif (@top_pair_card = value_map[3].first && @second_pair_card = value_map[2].first)
+            :full_house
+          elsif (@top_pair_card = value_map[3].first)
+            :three_of_a_kind
+          elsif value_map[2].size == 2
+            @top_pair_card = value_map[2].max
+            @second_pair_card = value_map[2].min
+            :two_pair
+          elsif (@top_pair_card = value_map[2].first)
+            :pair
+          else
+            :high_card
+          end
+        end
+      end
     end
 
     def flush?
@@ -63,6 +92,22 @@ module PokerToolbox
 
       # if it finished with an integer, it never broke false, so it must be a straight
       is_straight.is_a?(Numeric)
+    end
+
+    def value_map
+      # build a map of count => card
+      hash_with_default = Hash.new { |hash, key| hash[key] = [] }
+      cards.map(&:value).tally.reduce(hash_with_default) do |hash, (card, count)|
+        hash[count] << card
+        hash
+      end
+    end
+
+    def highest_straight_card
+      # check for wheel, make sure high card is only 5 in that case
+      return 5 if cards.first.value == 14 && cards[1].value == 5
+
+      cards.first.value
     end
   end
 end
