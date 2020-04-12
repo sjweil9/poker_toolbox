@@ -4,6 +4,9 @@
 $TESTING = true
 # rubocop:enable Style/GlobalVars
 
+require "simplecov"
+SimpleCov.start
+
 require "bundler/setup"
 require "poker_toolbox"
 

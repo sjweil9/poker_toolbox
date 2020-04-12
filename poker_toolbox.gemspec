@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "rubocop", "~> 0.81.0"
+  spec.add_development_dependency "simplecov"
 end
