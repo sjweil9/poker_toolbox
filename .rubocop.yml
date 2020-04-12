@@ -1,7 +1,9 @@
 AllCops:
   TargetRubyVersion: 2.7
   Exclude:
-    - poker_toolbox.gemspec
+    - 'poker_toolbox.gemspec'
+    - 'spec/**/*.rb'
+    - 'Rakefile'
 
 Layout/LineLength:
   Max: 120

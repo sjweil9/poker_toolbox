@@ -1,4 +1,6 @@
-require "json"
+# frozen_string_literal: true
+
+require 'json'
 
 module PokerToolbox
   class Hand
@@ -37,13 +39,13 @@ module PokerToolbox
       when :straight
         4_000_000 + highest_straight_card
       when :three_of_a_kind
-        3_000_000 + value_map[1].map.with_index { |v, i| v * 10 ** (2 - i) }.reduce(0, :+)
+        3_000_000 + value_map[1].map.with_index { |v, i| v * 10**(2 - i) }.reduce(0, :+)
       when :two_pair
         2_000_000 + (top_pair_card * 1500) + (second_pair_card * 15) + value_map[1].first
       when :pair
-        1_000_000 + (top_pair_card * 10000) + value_map[1].map.with_index { |v, i| v * 10 ** (2 - i) }.reduce(0, :+)
+        1_000_000 + (top_pair_card * 10_000) + value_map[1].map.with_index { |v, i| v * 10**(2 - i) }.reduce(0, :+)
       when :high_card
-        cards.map.with_index { |c, i| c.value * 10 ** (4 - i) }.reduce(0, :+)
+        cards.map.with_index { |c, i| c.value * 10**(4 - i) }.reduce(0, :+)
       end
     end
 
@@ -106,9 +108,8 @@ module PokerToolbox
     def value_map
       # build a map of count => card
       hash_with_default = Hash.new { |hash, key| hash[key] = [] }
-      cards.map(&:value).tally.reduce(hash_with_default) do |hash, (card, count)|
+      cards.map(&:value).tally.each_with_object(hash_with_default) do |(card, count), hash|
         hash[count] << card
-        hash
       end
     end
 

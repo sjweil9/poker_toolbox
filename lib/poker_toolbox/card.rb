@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PokerToolbox
   class Card
     attr_reader :suit

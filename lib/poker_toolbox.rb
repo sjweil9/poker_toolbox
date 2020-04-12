@@ -1,6 +1,8 @@
-require "poker_toolbox/version"
-require "poker_toolbox/card"
-require "poker_toolbox/hand"
+# frozen_string_literal: true
+
+require 'poker_toolbox/version'
+require 'poker_toolbox/card'
+require 'poker_toolbox/hand'
 
 module PokerToolbox
   class Error < StandardError; end
