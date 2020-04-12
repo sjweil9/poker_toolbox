@@ -3,7 +3,7 @@
 require 'json'
 
 module PokerToolbox
-  class Hand
+  class Hand #:nodoc:
     def self.from_json(json)
       cards = JSON.parse(json).map do |string|
         Card.new(string)
@@ -22,10 +22,13 @@ module PokerToolbox
       @value ||= calculate_value
     end
 
+    # rubocop:disable Style/GlobalVars
     private unless $TESTING
+    # rubocop:enable Style/GlobalVars
 
     attr_reader :top_pair_card, :second_pair_card
 
+    # rubocop:disable all
     def calculate_value
       case hand_rank
       when :straight_flush
@@ -52,30 +55,27 @@ module PokerToolbox
     def hand_rank
       if straight?
         flush? ? :straight_flush : :straight
+      elsif flush?
+        # not possible to have a better hand if flush and not straight-flush (four of a kind/full house are impossible)
+        :flush
+      elsif (@top_pair_card = value_map[4].first)
+        @second_pair_card = value_map[1].first
+        :four_of_a_kind
+      elsif (@top_pair_card = value_map[3].first) && (@second_pair_card = value_map[2].first)
+        :full_house
+      elsif (@top_pair_card = value_map[3].first)
+        :three_of_a_kind
+      elsif value_map[2].size == 2
+        @top_pair_card = value_map[2].max
+        @second_pair_card = value_map[2].min
+        :two_pair
+      elsif (@top_pair_card = value_map[2].first)
+        :pair
       else
-        if flush?
-          # not possible to have a better hand if flush and not straight-flush (four of a kind/full house are impossible)
-          :flush
-        else
-          if (@top_pair_card = value_map[4].first)
-            @second_pair_card = value_map[1].first
-            :four_of_a_kind
-          elsif (@top_pair_card = value_map[3].first) && (@second_pair_card = value_map[2].first)
-            :full_house
-          elsif (@top_pair_card = value_map[3].first)
-            :three_of_a_kind
-          elsif value_map[2].size == 2
-            @top_pair_card = value_map[2].max
-            @second_pair_card = value_map[2].min
-            :two_pair
-          elsif (@top_pair_card = value_map[2].first)
-            :pair
-          else
-            :high_card
-          end
-        end
+        :high_card
       end
     end
+    # rubocop:enable all
 
     def flush?
       return @flush unless @flush.nil?

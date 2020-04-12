@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module PokerToolbox
-  class Card
+  class Card #:nodoc:
     attr_reader :suit
 
     def initialize(string)
