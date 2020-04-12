@@ -1,3 +1,5 @@
+$TESTING = true
+
 require "bundler/setup"
 require "poker_toolbox"
 
