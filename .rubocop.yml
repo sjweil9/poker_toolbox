@@ -4,6 +4,8 @@ AllCops:
     - 'poker_toolbox.gemspec'
     - 'spec/**/*.rb'
     - 'Rakefile'
+    - 'vendor/**/*'
+    - 'coverage/**/*'
 
 Layout/LineLength:
   Max: 120
